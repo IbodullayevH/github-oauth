@@ -17,6 +17,13 @@
             ],
             "@errors": [
                 "./src/errors/index.ts"
+            ],
+            "@utils": [
+                "./src/utils/index.ts"
+            ],
+
+            "@middleware": [
+                "./src/middlewares/index.ts"
             ]
         },
         "esModuleInterop": true,
@@ -26,7 +33,7 @@
     },
     "include": [
         "src/**/*"
-    ],
+, "public"    ],
     "exclude": [
         "./dist"
     ]
