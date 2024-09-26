@@ -16,3 +16,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./passportConfig"), exports);
 __exportStar(require("./redisConfig"), exports);
+__exportStar(require("./githubPassportConfig"), exports);

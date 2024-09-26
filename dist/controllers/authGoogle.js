@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthController = void 0;
-const errors_1 = require("../errors");
+exports.GoogleAuthController = void 0;
 const client_1 = require("@prisma/client");
 const config_1 = require("../config");
+const errors_1 = require("../errors");
+const utils_1 = require("../utils");
 let prisma = new client_1.PrismaClient();
-class AuthController {
+class GoogleAuthController {
     static getLoginPage(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -30,31 +31,46 @@ class AuthController {
             try {
                 let user = req.user;
                 let displayName = user.profile.displayName;
-                let name = user.profile.name;
+                let userId = user.profile.id;
                 let emails = user.profile.emails;
                 let photos = user.profile.photos;
-                name = name.givenName;
                 emails = emails[0].value;
                 photos = photos[0].value;
-                let existName = yield prisma.users_db.findFirst({
+                let existEmail = yield prisma.users_db.findFirst({
                     where: {
-                        name
+                        emails
                     }
                 });
-                if (existName) {
-                    res.render("dashboard");
-                    return;
+                if (existEmail) {
+                    let access_token = (0, utils_1.sign_mtd)({ id: user.profile.id }, "200s");
+                    let refresh_token = (0, utils_1.sign_mtd)({ id: user.profile.id }, "7d");
+                    return res.status(200).send({
+                        success: true,
+                        message: "Successfully login",
+                        access_token: access_token,
+                        refresh_token: refresh_token,
+                        email: emails
+                    });
                 }
-                let userAddDb = yield prisma.users_db.create({
-                    data: {
-                        displayName,
-                        name,
-                        emails,
-                        photos
-                    }
-                });
-                yield config_1.redisClient.set(`users_db:${userAddDb.id}`, JSON.stringify(userAddDb));
-                res.render("dashboard");
+                else {
+                    let userAddDb = yield prisma.users_db.create({
+                        data: {
+                            displayName,
+                            userId,
+                            emails,
+                            photos
+                        }
+                    });
+                    yield config_1.redisClient.set(`users_db:${userAddDb.id}`, JSON.stringify(userAddDb));
+                    let access_token = (0, utils_1.sign_mtd)({ id: user.profile.id }, "200s");
+                    let refresh_token = (0, utils_1.sign_mtd)({ id: user.profile.id }, "7d");
+                    res.status(200).send({
+                        success: true,
+                        message: "Successfully registred",
+                        access_token: access_token,
+                        refresh_token: refresh_token
+                    });
+                }
             }
             catch (error) {
                 next(new errors_1.ErrorHandler(error.message, error.status));
@@ -62,4 +78,4 @@ class AuthController {
         });
     }
 }
-exports.AuthController = AuthController;
+exports.GoogleAuthController = GoogleAuthController;

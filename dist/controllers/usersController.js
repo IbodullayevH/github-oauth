@@ -9,15 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ErrorHandlerMiddleware = void 0;
-class ErrorHandlerMiddleware {
-    static errorHandlerMiddleware(err, req, res, next) {
+exports.UserController = void 0;
+const errors_1 = require("../errors");
+class UserController {
+    static getMe(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            return res.status(err.status || 500).send({
-                success: false,
-                message: err.message || "internal server error!"
-            });
+            try {
+                let user = req.user;
+                res.status(200).send({
+                    success: true,
+                    message: 'Success!',
+                    data: user
+                });
+            }
+            catch (error) {
+                next(new errors_1.ErrorHandler(error.message, error.status));
+            }
         });
     }
 }
-exports.ErrorHandlerMiddleware = ErrorHandlerMiddleware;
+exports.UserController = UserController;

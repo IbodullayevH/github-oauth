@@ -15,4 +15,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./errorHandlerMiddleware"), exports);
-__exportStar(require("./passportMiddleware"), exports);
+__exportStar(require("./googleMiddleware"), exports);
+__exportStar(require("./githubMiddleware"), exports);
+__exportStar(require("./verifyToken"), exports);

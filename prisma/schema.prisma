@@ -9,8 +9,10 @@ datasource users_database {
 
 model users_db {
     id          Int     @id @default(autoincrement())
-    displayName String?
-    name        String?
+    userId      String? @default("")
+    displayName String
+    username    String? @default("")
+    profileUrl  String? @default("")
     emails      String
     photos      String
 }

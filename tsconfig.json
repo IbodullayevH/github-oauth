@@ -4,7 +4,7 @@
         "module": "commonjs",
         "rootDir": "./src",
         "outDir": "./dist",
-        "baseUrl": "./src/",
+        "baseUrl": "./src",
         "paths": {
             "@interfaces": [
                 "./src/interfaces"
@@ -16,7 +16,7 @@
                 "./src/models/"
             ],
             "@errors": [
-                "./src/errors/index.ts"
+                "/src/errors/index.ts"
             ],
             "@utils": [
                 "./src/utils/index.ts"

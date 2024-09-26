@@ -1,2 +1,4 @@
 export * from "./errorHandlerMiddleware"
-export * from "./passportMiddleware"
+export * from "./googleMiddleware"
+export * from "./githubMiddleware"
+export * from "./verifyToken"
